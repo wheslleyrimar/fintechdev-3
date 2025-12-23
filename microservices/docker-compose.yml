@@ -1,0 +1,63 @@
+services:
+  # Banco de dados do serviço de pagamentos (autonomia de dados)
+  payments-db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: fintech
+      POSTGRES_PASSWORD: fintech
+      POSTGRES_DB: payments
+    volumes:
+      - payments_db_data:/var/lib/postgresql/data
+      - ../db/init-payments.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fintech -d payments"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # Banco de dados do serviço de notificações (autonomia de dados)
+  notifications-db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: fintech
+      POSTGRES_PASSWORD: fintech
+      POSTGRES_DB: notifications
+    volumes:
+      - notifications_db_data:/var/lib/postgresql/data
+      - ../db/init-notifications.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fintech -d notifications"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # Serviço de Notificações (deve iniciar primeiro)
+  notifications-service:
+    build: ./notifications-service
+    environment:
+      DATABASE_URL: postgres://fintech:fintech@notifications-db:5432/notifications?sslmode=disable
+      PORT: "8080"
+    depends_on:
+      notifications-db:
+        condition: service_healthy
+    ports:
+      - "8082:8080"
+
+  # Serviço de Pagamentos (depende do serviço de notificações)
+  payments-service:
+    build: ./payments-service
+    environment:
+      DATABASE_URL: postgres://fintech:fintech@payments-db:5432/payments?sslmode=disable
+      NOTIFICATION_SERVICE_URL: http://notifications-service:8080
+      PORT: "8080"
+    depends_on:
+      payments-db:
+        condition: service_healthy
+      notifications-service:
+        condition: service_started
+    ports:
+      - "8081:8080"
+
+volumes:
+  payments_db_data:
+  notifications_db_data:

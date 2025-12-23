@@ -1,0 +1,36 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+monolith-api
+payments-service
+notifications-service
+
+# Go
+vendor/
+*.mod.sum
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.log
+
+# Database
+*.db
+*.sqlite
+
+# Aula 3 - Guia do Instrutor (não enviar para GitHub)
+aula-3/
