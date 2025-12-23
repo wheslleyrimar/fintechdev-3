@@ -1,0 +1,144 @@
+basePath: /
+definitions:
+  apps_monolith-api_http.createPixRequest:
+    properties:
+      amount:
+        type: number
+    type: object
+  fintech-monolith_domains_payments.PaymentStatus:
+    enum:
+    - CREATED
+    - AUTHORIZED
+    - SETTLED
+    type: string
+    x-enum-varnames:
+    - StatusCreated
+    - StatusAuthorized
+    - StatusSettled
+  fintech-monolith_domains_payments.PixPayment:
+    properties:
+      amount:
+        type: number
+      created_at:
+        type: string
+      id:
+        type: integer
+      status:
+        $ref: '#/definitions/fintech-monolith_domains_payments.PaymentStatus'
+    type: object
+host: localhost:8080
+info:
+  contact:
+    name: Fintech Dev
+    url: https://github.com/fintechdev
+  description: |-
+    API monolítica para gerenciamento de pagamentos PIX e notificações
+    Esta é uma implementação monolítica onde todos os domínios compartilham o mesmo banco de dados
+  title: Fintech Monolith API
+  version: "1.0"
+paths:
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: Verifica se a API está funcionando
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Health check
+      tags:
+      - health
+  /payments/pix:
+    get:
+      consumes:
+      - application/json
+      description: Retorna uma lista de todos os pagamentos PIX criados, ordenados
+        por data de criação (mais recentes primeiro)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/fintech-monolith_domains_payments.PixPayment'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Lista todos os pagamentos PIX
+      tags:
+      - payments
+    post:
+      consumes:
+      - application/json
+      description: Cria um novo pagamento PIX com o valor especificado. Automaticamente
+        cria uma notificação associada.
+      parameters:
+      - description: Dados do pagamento
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/apps_monolith-api_http.createPixRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/fintech-monolith_domains_payments.PixPayment'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Cria um novo pagamento PIX
+      tags:
+      - payments
+  /payments/pix/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retorna os detalhes de um pagamento PIX específico pelo seu ID
+      parameters:
+      - description: ID do pagamento
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/fintech-monolith_domains_payments.PixPayment'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Busca pagamento PIX por ID
+      tags:
+      - payments
+schemes:
+- http
+swagger: "2.0"

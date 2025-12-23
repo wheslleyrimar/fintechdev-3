@@ -1,0 +1,211 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "API monolítica para gerenciamento de pagamentos PIX e notificações\nEsta é uma implementação monolítica onde todos os domínios compartilham o mesmo banco de dados",
+        "title": "Fintech Monolith API",
+        "contact": {
+            "name": "Fintech Dev",
+            "url": "https://github.com/fintechdev"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/health": {
+            "get": {
+                "description": "Verifica se a API está funcionando",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "health"
+                ],
+                "summary": "Health check",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/payments/pix": {
+            "get": {
+                "description": "Retorna uma lista de todos os pagamentos PIX criados, ordenados por data de criação (mais recentes primeiro)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "payments"
+                ],
+                "summary": "Lista todos os pagamentos PIX",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/fintech-monolith_domains_payments.PixPayment"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Cria um novo pagamento PIX com o valor especificado. Automaticamente cria uma notificação associada.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "payments"
+                ],
+                "summary": "Cria um novo pagamento PIX",
+                "parameters": [
+                    {
+                        "description": "Dados do pagamento",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/apps_monolith-api_http.createPixRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/fintech-monolith_domains_payments.PixPayment"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/payments/pix/{id}": {
+            "get": {
+                "description": "Retorna os detalhes de um pagamento PIX específico pelo seu ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "payments"
+                ],
+                "summary": "Busca pagamento PIX por ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID do pagamento",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/fintech-monolith_domains_payments.PixPayment"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "apps_monolith-api_http.createPixRequest": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                }
+            }
+        },
+        "fintech-monolith_domains_payments.PaymentStatus": {
+            "type": "string",
+            "enum": [
+                "CREATED",
+                "AUTHORIZED",
+                "SETTLED"
+            ],
+            "x-enum-varnames": [
+                "StatusCreated",
+                "StatusAuthorized",
+                "StatusSettled"
+            ]
+        },
+        "fintech-monolith_domains_payments.PixPayment": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "$ref": "#/definitions/fintech-monolith_domains_payments.PaymentStatus"
+                }
+            }
+        }
+    }
+}

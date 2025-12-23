@@ -1,4 +1,4 @@
-# Binaries
+# Binaries (executáveis compilados - não enviar)
 *.exe
 *.exe~
 *.dll
@@ -6,9 +6,10 @@
 *.dylib
 *.test
 *.out
-monolith-api
-payments-service
-notifications-service
+# Binários Go compilados na raiz (se existirem)
+/monolith-api
+/payments-service
+/notifications-service
 
 # Go
 vendor/
