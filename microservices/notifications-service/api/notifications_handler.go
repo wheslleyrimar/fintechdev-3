@@ -80,7 +80,7 @@ func (h *NotificationsHandler) create(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("INFO: Creating notification - Type: %s, PaymentID: %d", req.Type, req.PaymentID)
 
-	notification, err := h.createUC.Execute(req.Type, "user@example.com", message)
+	notification, err := h.createUC.Execute(req.PaymentID, req.Type, "user@example.com", message)
 	if err != nil {
 		log.Printf("ERROR: Failed to create notification: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)

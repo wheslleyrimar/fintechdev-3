@@ -10,11 +10,13 @@ CREATE TABLE IF NOT EXISTS pix_payments (
 
 CREATE TABLE IF NOT EXISTS notifications (
   id BIGSERIAL PRIMARY KEY,
+  payment_id BIGINT NOT NULL,
   type TEXT NOT NULL,
   recipient TEXT NOT NULL,
   message TEXT NOT NULL,
   status TEXT NOT NULL,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  CONSTRAINT fk_payment FOREIGN KEY (payment_id) REFERENCES pix_payments(id)
 );
 
 -- NOTE: No monólito, ambos os domínios compartilham o mesmo banco

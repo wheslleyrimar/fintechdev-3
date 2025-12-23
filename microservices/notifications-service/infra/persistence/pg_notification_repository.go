@@ -22,8 +22,8 @@ func (r *PgNotificationRepository) Save(notification *domain.Notification) (*dom
 
 	var id int64
 	err := r.pool.QueryRow(ctx,
-		"INSERT INTO notifications (type, recipient, message, status, created_at) VALUES ($1, $2, $3, $4, $5) RETURNING id",
-		notification.Type, notification.Recipient, notification.Message, string(notification.Status), notification.CreatedAt,
+		"INSERT INTO notifications (payment_id, type, recipient, message, status, created_at) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id",
+		notification.PaymentID, notification.Type, notification.Recipient, notification.Message, string(notification.Status), notification.CreatedAt,
 	).Scan(&id)
 
 	if err != nil {
@@ -41,9 +41,9 @@ func (r *PgNotificationRepository) FindByID(id int64) (*domain.Notification, err
 	var notification domain.Notification
 	var status string
 	err := r.pool.QueryRow(ctx,
-		"SELECT id, type, recipient, message, status, created_at FROM notifications WHERE id = $1",
+		"SELECT id, payment_id, type, recipient, message, status, created_at FROM notifications WHERE id = $1",
 		id,
-	).Scan(&notification.ID, &notification.Type, &notification.Recipient, &notification.Message, &status, &notification.CreatedAt)
+	).Scan(&notification.ID, &notification.PaymentID, &notification.Type, &notification.Recipient, &notification.Message, &status, &notification.CreatedAt)
 
 	if err != nil {
 		return nil, err
@@ -58,7 +58,7 @@ func (r *PgNotificationRepository) FindAll() ([]*domain.Notification, error) {
 	defer cancel()
 
 	rows, err := r.pool.Query(ctx,
-		"SELECT id, type, recipient, message, status, created_at FROM notifications ORDER BY created_at DESC",
+		"SELECT id, payment_id, type, recipient, message, status, created_at FROM notifications ORDER BY created_at DESC",
 	)
 	if err != nil {
 		return nil, err
@@ -69,7 +69,7 @@ func (r *PgNotificationRepository) FindAll() ([]*domain.Notification, error) {
 	for rows.Next() {
 		var notification domain.Notification
 		var status string
-		if err := rows.Scan(&notification.ID, &notification.Type, &notification.Recipient, &notification.Message, &status, &notification.CreatedAt); err != nil {
+		if err := rows.Scan(&notification.ID, &notification.PaymentID, &notification.Type, &notification.Recipient, &notification.Message, &status, &notification.CreatedAt); err != nil {
 			return nil, err
 		}
 		notification.Status = domain.NotificationStatus(status)

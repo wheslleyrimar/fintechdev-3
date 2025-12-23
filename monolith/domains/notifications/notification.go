@@ -4,6 +4,7 @@ import "time"
 
 type Notification struct {
 	ID        int64
+	PaymentID int64 // Associação com o pagamento PIX
 	Type      string
 	Recipient string
 	Message   string
@@ -19,8 +20,9 @@ const (
 	StatusFailed  NotificationStatus = "FAILED"
 )
 
-func NewNotification(notificationType, recipient, message string) *Notification {
+func NewNotification(paymentID int64, notificationType, recipient, message string) *Notification {
 	return &Notification{
+		PaymentID: paymentID,
 		Type:      notificationType,
 		Recipient: recipient,
 		Message:   message,

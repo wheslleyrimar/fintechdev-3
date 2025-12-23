@@ -10,8 +10,8 @@ func NewCreateNotificationUseCase(repo domain.NotificationRepository) *CreateNot
 	return &CreateNotificationUseCase{repo: repo}
 }
 
-func (uc *CreateNotificationUseCase) Execute(notificationType, recipient, message string) (*domain.Notification, error) {
-	notification := domain.NewNotification(notificationType, recipient, message)
+func (uc *CreateNotificationUseCase) Execute(paymentID int64, notificationType, recipient, message string) (*domain.Notification, error) {
+	notification := domain.NewNotification(paymentID, notificationType, recipient, message)
 
 	// Salvar no banco próprio do serviço
 	saved, err := uc.repo.Save(notification)

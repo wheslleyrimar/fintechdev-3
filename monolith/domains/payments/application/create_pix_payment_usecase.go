@@ -73,6 +73,7 @@ func (uc *CreatePixPaymentUseCase) processPaymentFlow(saved *payments.PixPayment
 
 	// 4. Criar notificação de criação
 	notification := notifications.NewNotification(
+		saved.ID,
 		"PAYMENT_CREATED",
 		"user@example.com",
 		"Pagamento PIX criado com sucesso",
@@ -101,6 +102,7 @@ func (uc *CreatePixPaymentUseCase) processPaymentFlow(saved *payments.PixPayment
 
 	// 6. Criar notificação de autorização
 	authNotification := notifications.NewNotification(
+		saved.ID,
 		"PAYMENT_AUTHORIZED",
 		"user@example.com",
 		"Pagamento PIX autorizado pelo BACEN",
@@ -129,6 +131,7 @@ func (uc *CreatePixPaymentUseCase) processPaymentFlow(saved *payments.PixPayment
 
 	// 8. Criar notificação de liquidação
 	settleNotification := notifications.NewNotification(
+		saved.ID,
 		"PAYMENT_SETTLED",
 		"user@example.com",
 		"Pagamento PIX liquidado com sucesso",
