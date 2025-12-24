@@ -15,4 +15,3 @@ type PaymentEvent struct {
 type EventBroadcaster interface {
 	Broadcast(paymentID int64, event PaymentEvent)
 }
-

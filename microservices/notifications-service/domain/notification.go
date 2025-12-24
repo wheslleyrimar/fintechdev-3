@@ -3,13 +3,13 @@ package domain
 import "time"
 
 type Notification struct {
-	ID        int64             `json:"id"`
-	PaymentID int64             `json:"payment_id"` // Referência ao pagamento (sem FK, pois está em outro serviço)
-	Type      string            `json:"type"`
-	Recipient string            `json:"recipient"`
-	Message   string            `json:"message"`
+	ID        int64              `json:"id"`
+	PaymentID int64              `json:"payment_id"` // Referência ao pagamento (sem FK, pois está em outro serviço)
+	Type      string             `json:"type"`
+	Recipient string             `json:"recipient"`
+	Message   string             `json:"message"`
 	Status    NotificationStatus `json:"status"`
-	CreatedAt time.Time         `json:"created_at"`
+	CreatedAt time.Time          `json:"created_at"`
 }
 
 type NotificationStatus string

@@ -24,12 +24,12 @@ func (g *BacenPixGateway) Authorize(payment *payments.PixPayment) error {
 	// Simula autorização no BACEN
 	log.Printf("BACEN: Processando autorização de pagamento PIX - ID: %d", payment.ID)
 	time.Sleep(200 * time.Millisecond)
-	
+
 	// Simula validações do BACEN
 	if payment.Amount > 100000 {
 		log.Printf("BACEN: Pagamento acima de R$ 100.000 requer análise adicional")
 	}
-	
+
 	log.Printf("BACEN: Pagamento PIX autorizado - ID: %d", payment.ID)
 	return nil
 }
