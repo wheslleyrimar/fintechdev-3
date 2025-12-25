@@ -137,7 +137,7 @@ Microsserviços:
    ```bash
    # Mostre o use case
    cat ../monolith/domains/payments/application/create_pix_payment_usecase.go
-   # Linha 75-81: Cria notificação diretamente (in-memory)
+   # Linha 75-81: Cria notificação diretamente via repositório (mesmo processo)
    ```
 
    **Execute e teste:**
