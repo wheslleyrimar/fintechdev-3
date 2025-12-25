@@ -213,7 +213,7 @@ CREATE TABLE notifications (
 
 **Cliente HTTP** (`microservices/payments-service/infra/notifications/http_notification_client.go`):
 ```go
-func (c *HttpNotificationClient) SendPaymentCreatedNotification(
+func (c *HTTPNotificationClient) SendPaymentCreatedNotification(
     paymentID int64, 
     amount float64,
 ) error {
