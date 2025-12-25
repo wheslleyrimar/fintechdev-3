@@ -368,20 +368,20 @@ Analisar a extração já implementada do serviço de Notificações e propor me
 1. **Analisar a Implementação Existente**
    ```bash
    # Examinar o código do monólito
-   cat monolith/domains/payments/application/create_pix_payment_usecase.go
+   cat ../monolith/domains/payments/application/create_pix_payment_usecase.go
    
    # Examinar o código dos microsserviços
-   cat microservices/payments-service/application/create_pix_payment_usecase.go
-   cat microservices/notifications-service/api/notifications_handler.go
+   cat ../microservices/payments-service/application/create_pix_payment_usecase.go
+   cat ../microservices/notifications-service/api/notifications_handler.go
    ```
 
 2. **Executar e Comparar**
    ```bash
-   # Terminal 1: Executar monólito
+   # Terminal 1: Executar monólito (a partir da raiz do projeto)
    cd monolith
    docker compose up --build
    
-   # Terminal 2: Executar microsserviços
+   # Terminal 2: Executar microsserviços (a partir da raiz do projeto)
    cd microservices
    docker compose up --build
    
