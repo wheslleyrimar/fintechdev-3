@@ -1,6 +1,6 @@
 # Como Testar a Aplicação Monolítica
 
-## 🚀 Iniciar a Aplicação
+##  Iniciar a Aplicação
 
 ### Opção 1: Rodar em Background (Recomendado)
 
@@ -27,7 +27,7 @@ Em outro terminal, você pode ver os logs:
 docker compose logs -f monolith-api
 ```
 
-## 📊 Verificar Status dos Containers
+##  Verificar Status dos Containers
 
 ```bash
 docker compose ps
@@ -150,7 +150,7 @@ curl -X POST http://localhost:8080/payments/pix \
   -d '{"amount": 1000.00}' | jq .
 ```
 
-## 📝 Ver Logs
+##  Ver Logs
 
 ### Ver todos os logs
 ```bash
@@ -177,7 +177,7 @@ docker compose logs -f db
 docker compose logs --tail=50 monolith-api
 ```
 
-## 🗄️ Verificar Banco de Dados
+## 🗄 Verificar Banco de Dados
 
 ### Conectar ao PostgreSQL
 
@@ -233,7 +233,7 @@ docker compose down
 docker compose down -v
 ```
 
-## 🔍 Debug
+##  Debug
 
 ### Ver logs de erro
 ```bash
@@ -257,7 +257,7 @@ curl -v http://localhost:8080/health
 
 O `-v` mostra detalhes da requisição HTTP.
 
-## 📋 Script de Teste Completo
+##  Script de Teste Completo
 
 Crie um arquivo `test.sh`:
 
@@ -293,7 +293,7 @@ chmod +x test.sh
 ./test.sh
 ```
 
-## 💡 Dicas
+##  Dicas
 
 1. **Instalar jq** (formatação JSON):
    ```bash
@@ -320,7 +320,7 @@ chmod +x test.sh
    docker compose ps
    ```
 
-## ❌ Problemas Comuns
+##  Problemas Comuns
 
 ### Container não inicia
 ```bash

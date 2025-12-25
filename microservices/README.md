@@ -1,10 +1,10 @@
 # Microsserviços - Arquitetura Distribuída
 
-## 📋 Sobre
+##  Sobre
 
 Esta é a implementação **distribuída** com microsserviços, onde cada serviço tem seu próprio banco de dados e se comunica via HTTP.
 
-## 🏗️ Arquitetura
+##  Arquitetura
 
 ```
 ┌──────────────┐     HTTP     ┌──────────────┐
@@ -19,25 +19,25 @@ Esta é a implementação **distribuída** com microsserviços, onde cada servi�
 └──────────┘                    └──────────┘
 ```
 
-## ✅ Características
+##  Características
 
 ### Autonomia de Dados
 
-- ✅ Cada serviço tem seu próprio banco
-- ✅ Evolução independente
-- ✅ Escalabilidade por serviço
-- ✅ Isolamento de falhas
+-  Cada serviço tem seu próprio banco
+-  Evolução independente
+-  Escalabilidade por serviço
+-  Isolamento de falhas
 
 ### Comunicação via HTTP
 
-- ✅ Desacoplamento de serviços
-- ✅ Deploy independente
-- ✅ Escalabilidade independente
-- ⚠️ Latência de rede
-- ⚠️ Falhas parciais
-- ⚠️ Eventual consistency
+-  Desacoplamento de serviços
+-  Deploy independente
+-  Escalabilidade independente
+-  Latência de rede
+-  Falhas parciais
+-  Eventual consistency
 
-## 🚀 Como Executar
+##  Como Executar
 
 ```bash
 docker compose up --build
@@ -47,7 +47,7 @@ Serviços disponíveis:
 - Payments: `http://localhost:8081/health`
 - Notifications: `http://localhost:8082/health`
 
-## 📝 Endpoints Disponíveis
+##  Endpoints Disponíveis
 
 ### Payments Service (porta 8081)
 
@@ -83,7 +83,7 @@ curl http://localhost:8082/notifications/1
 curl http://localhost:8082/health
 ```
 
-## 🔄 Fluxo de Comunicação Completo
+##  Fluxo de Comunicação Completo
 
 O fluxo completo de pagamento PIX funciona da seguinte forma:
 
@@ -105,26 +105,20 @@ Se o Notifications Service estiver indisponível:
 - As notificações falharão silenciosamente (erro é logado mas não interrompe o fluxo)
 - Em produção, implementar retry ou fila de eventos para garantir entrega das notificações
 
-## 📊 Comparação com Monólito
+##  Comparação com Monólito
 
-| Aspecto | Monólito | Microsserviços |
-|---------|----------|----------------|
-| Banco de Dados | Compartilhado | Por serviço |
-| Comunicação | Chamada direta | HTTP/Eventos |
-| Deploy | Único | Independente |
-| Escalabilidade | Tudo junto | Por serviço |
-| Complexidade | Baixa | Alta |
-| Latência | Baixa | Média |
-| Consistência | Forte | Eventual |
+>  **Para comparação detalhada entre Monólito e Microsserviços, consulte:**
+> - [`../COMPARACAO.md`](../COMPARACAO.md) - Comparação completa e detalhada
+> - [`../monolith/README.md`](../monolith/README.md) - Documentação do monólito
 
-## 🎯 Lições Aprendidas
+##  Lições Aprendidas
 
 1. **Autonomia de dados é essencial** - Sem isso, não há microsserviço real
 2. **Comunicação síncrona é simples** - Comece por aqui
 3. **Falhas são esperadas** - Projete para elas
 4. **Observabilidade é obrigatória** - Sem ela, é impossível debugar
 
-## 🔍 Monitoramento em Tempo Real
+##  Monitoramento em Tempo Real
 
 O payments-service inclui uma página de monitoramento em tempo real usando Server-Sent Events (SSE):
 
@@ -136,7 +130,7 @@ A página permite:
 - Ver mudanças de status (CREATED → AUTHORIZED → SETTLED)
 - Visualizar log de eventos com timestamps
 
-## 📚 Próximos Passos
+##  Próximos Passos
 
 - Implementar comunicação assíncrona (eventos)
 - Adicionar circuit breaker
