@@ -8,37 +8,31 @@ Este documento compara as duas implementações disponíveis neste repositório.
 
 ### Monólito
 
-```
-┌─────────────────────────────────┐
-│      Monolith API               │
-│                                 │
-│  ┌──────────┐  ┌─────────────┐ │
-│  │ Payments │  │Notifications │ │
-│  │ Domain   │  │   Domain     │ │
-│  └──────────┘  └─────────────┘ │
-│                                 │
-└──────────────┬──────────────────┘
-               │
-               ▼
-        ┌──────────┐
-        │  Banco   │
-        │Compartilhado│
-        └──────────┘
+```mermaid
+flowchart TB
+    subgraph Monolith["Monolith API"]
+        Payments["Payments Domain"]
+        Notifications["Notifications Domain"]
+    end
+    DB[("Banco Compartilhado")]
+    Monolith --> DB
 ```
 
 ### Microsserviços
 
-```
-┌──────────────┐     HTTP     ┌──────────────┐
-│ Payments     │─────────────▶│ Notifications│
-│ Service      │              │   Service    │
-└───────┬──────┘              └───────┬──────┘
-        │                              │
-        ▼                              ▼
-┌──────────┐                    ┌──────────┐
-│ Payments │                    │Notifications│
-│   DB     │                    │    DB     │
-└──────────┘                    └──────────┘
+```mermaid
+flowchart TB
+    subgraph PS["Payments Service"]
+        PD[Payments Domain]
+    end
+    subgraph NS["Notifications Service"]
+        ND[Notifications Domain]
+    end
+    PDB[("Payments DB")]
+    NDB[("Notifications DB")]
+    PS -->|HTTP| NS
+    PS --> PDB
+    NS --> NDB
 ```
 
 ##  Comparação Detalhada
